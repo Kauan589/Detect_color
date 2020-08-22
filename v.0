@@ -1,0 +1,40 @@
+import cv2
+import numpy as np
+
+def nothing(x):
+    pass
+
+img = cv2.imread("Escala.PNG")
+
+hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+cv2.namedWindow('trackbars')
+
+cv2.createTrackbar('lb', 'trackbars', 0, 255, nothing)
+cv2.createTrackbar('lg', 'trackbars', 0, 255, nothing)
+cv2.createTrackbar('lr', 'trackbars', 0, 255, nothing)
+cv2.createTrackbar('ub', 'trackbars', 0, 255, nothing)
+cv2.createTrackbar('ug', 'trackbars', 0, 255, nothing)
+cv2.createTrackbar('ur', 'trackbars', 0, 255, nothing)
+
+while (True):
+    lb = cv2.getTrackbarPos('lb', 'trackbars')
+    lg = cv2.getTrackbarPos('lg', 'trackbars')
+    lr = cv2.getTrackbarPos('lr', 'trackbars')
+    ub = cv2.getTrackbarPos('ub', 'trackbars')
+    ug = cv2.getTrackbarPos('ug', 'trackbars')
+    ur = cv2.getTrackbarPos('ur', 'trackbars')
+
+    lower_range = np.array([lb,lg,lr])
+    upper_range = np.array([ub,ug,ur])
+
+    mask = cv2.inRange(hsv, lower_range, upper_range)
+
+    cv2.imshow('Imagem', img)
+    cv2.imshow('Mask', mask)
+
+    if cv2.waitKey(1) & 0xFF == ord('s'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
